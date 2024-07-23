@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<!-- Legal Footnote: This content is subject to copyright and should not be reproduced without permission. -->
+<!-- Written and created by Thomas John-Michael de Beer, feel free to contact me via tjdebeer@gmail.com  -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>VLEISSENTRAAL</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="description" content="Join the Edgehill Greens Livestock Auction to bid on premium livestock.">
+  <meta name="keywords" content="livestock, auction, bidding, cattle, sheep, Edgehill Greens">
+  <meta name="author" content="Edgehill Greens">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #3498db;
+      --secondary-color: #2c3e50;
+      --accent-color: #27ae60;
+      --text-color: #333;
+      --bg-color: #f4f4f4;
+    }
+
+    * {
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: var(--text-color);
+      background-color: var(--bg-color);
+    }
+
+.container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+.banner {
+      width: 100%;
+      object-fit: cover;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+.profile-image {
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  position: fixed;
+  top: 77px;
+  right: 22px;
+  z-index: 1003;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: 0.9s ease;
+}
+
+.profile-image:hover {
+      transform: scale(1.1);
+    }
+
+.fixed-profile-image {
+  top: auto;
+  bottom: 22px;
+  transition: 0.9s ease;
+}
+
+.favorite-count {
+  position: fixed;
+  top: 71px;
+  right: 18px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.9rem;
+  font-weight: bold;
+  z-index: 1004;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.favorite-count.red {
+  background-color: #e74c3c;
+  color: white;
+  font-size: 1.1rem;
+}
+
+.favorite-count.green {
+  background-color: #2ecc71;
+  color: white;
+  font-size: 0.6rem;
+}
+
+.fixed-favorite-count {
+    top: auto;
+    bottom: 19px;
+}
+
+.search-bar {
+      margin: 20px 0;
+    }
+
+.search-bar input {
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 11px;
+    }
+
+.product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      scroll-snap-type: y mandatory;
+    }
+
+    .product-card {
+      position: relative;
+      background-color: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+.product-card .favorite {
+      position: absolute;
+      top: 0px;
+      right: 3px;
+      color: #f39c12;
+      cursor: pointer;
+      z-index: 1003;
+      opacity: 0.3;
+      transition: 0.3s ease;
+      padding: 10px;
+}
+
+.product-card .favorite:hover {
+      color: #e67e22;
+      transform: scale(1.2);
+      opacity: 0.3;
+}
+
+.product-card .favorite.clicked {
+    color: #e67e22;
+    transform: scale(1.1);
+    opacity: 1;
+}
+
+.product-card .refresh-icon {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  color: #2980b9;
+  cursor: pointer;
+  z-index: 1003;
+  opacity: 0.4;
+  transition: 0.3s ease;
+  padding: 15px;
+}
+
+.product-card .refresh-icon:hover {
+  opacity: 0.6;
+  transform: scale(1.1);
+}
+
+.rotate {
+  animation: rotateIcon 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+}
+
+@keyframes rotateIcon {
+  0%, 100% {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: rotate(180deg) scale(1.2);
+    opacity: 0.8;
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+    opacity: 0.6;
+  }
+}
+
+.product-video-container {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%;
+    overflow: hidden;
+    background-color: #000;
+}
+
+.product-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 101%;
+    height: 101%;
+    object-fit: cover;
+}
+
+    .product-info {
+      padding: 15px;
+    }
+
+    .product-title {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    .product-description {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .product-price {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: var(--accent-color);
+      margin-bottom: 10px;
+    }
+
+    .bid-form {
+      display: flex;
+      margin-bottom: 10px;
+    }
+
+    .bid-input {
+      flex-grow: 1;
+      padding: 5px;
+      font-size: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 5px 0 0 5px;
+    }
+
+    .bid-button {
+      background-color: var(--accent-color);
+      color: white;
+      border: none;
+      padding: 5px 20px;
+      cursor: pointer;
+      border-radius: 0 5px 5px 0;
+      transition: background-color 0.3s ease;
+    }
+
+    .bid-button:hover {
+      background-color: #2ecc71;
+    }
+
+    .countdown {
+      font-size: 0.9rem;
+      color: #e74c3c;
+      font-weight: bold;
+    }
+
+footer {
+  padding: 0.95rem;
+  text-align: center;
+  background-color: #333;
+  color: white; 
+  width: 100%;
+}
+
+    #overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      display: none;
+      z-index: 2000;
+    }
+
+  #profileUpdateForm {
+    letter-spacing: 0.5px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    width: 80dvw;
+    max-width: 300px;
+    padding: 20px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-top-left-radius: 77px;
+    border-top-right-radius: 77px;
+    border-bottom-left-radius: 33px;
+    border-bottom-right-radius: 77px;
+    margin-top: 20px;
+    z-index: 2222;
+  }
+  
+  #profileUpdateForm label {
+    display: block;
+    margin-bottom: 8px;
+  }
+  
+  #profileUpdateForm input[type="text"] {
+    letter-spacing: 0.6px;
+    width: calc(100% - 20px);
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    margin-bottom: 12px;
+  }
+  
+  #profileUpdateForm button {
+    letter-spacing: 1.1px;
+    padding: 10px 20px;
+    background-color: #1A2A5E;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    margin-right: 10px;
+    font-size: 14px;
+      opacity: 0.9;
+  }
+  
+  #profileUpdateForm button:hover {
+    background-color: #1A2A5E;
+      opacity: 1;
+  }
+
+    .profileUpdateprofile-image {
+      width: 111px;
+      height: 111px;
+      border-radius: 50%;
+      margin-bottom: 12px;
+    }
+
+
+  </style>
+</head>
+<body>
+  <img src="edgehill2.png" alt="Edgehill Greens Livestock Auction" class="banner">
+
+<span class="favorite-count" style="cursor: pointer;" onclick="EditProfile()">
+  <i id="profileIcon" class="fas fa-check"></i>
+</span>
+
+  <main class="container" style="margin-top: 20px;">
+    <div class="search-bar">
+      <input type="text" placeholder="Search livestock...">
+    </div>
+
+    <div class="product-grid" id="productGrid">
+
+    </div>
+  </div>
+
+<br>
+    </div>
+  </main>
+
+<footer>
+   VLEISSENTRAAL © 2024. <br>
+   All Rights Reserved.
+</footer>
+
+  <form id="profileForm">
+    <input type="file" id="profileImageInput" accept="image/*" style="display: none;">
+    <label for="profileImageInput" id="profileImageLabel" style="cursor: pointer;">
+       <img src="profile.jpg" alt="Current Profile Image" id="profileImage" class="profile-image">
+    </label>
+  </form>
+  <div id="uploadStatus"></div>
+
+
+  <div id="overlay" onclick="CloseProfileForm()"></div>
+
+<form id="profileUpdateForm">
+    <img src="profile.jpg" alt="Current Profile Image" id="currentProfileImage" class="profileUpdateprofile-image">
+    
+  <label for="nameInput">Name:</label>
+  <input type="text" id="nameInput" name="name" required><br><br>
+  
+  <label for="phoneInput">Phone Number:</label>
+  <input type="text" id="phoneInput" name="phone" required><br><br>
+  
+  <button type="button" id="saveProfile">SAVE</button>
+  <button type="button" id="deleteProfile">DELETE</button>
+</form>
+
+  <script>
+
+function updateProfileIcon() {
+  const ownerId = localStorage.getItem('OWNER_ID');
+  const profileIcon = document.getElementById('profileIcon');
+  const iconContainer = profileIcon.parentElement;
+
+  if (!ownerId) {
+    profileIcon.classList.remove('fas', 'fa-check');
+    profileIcon.textContent = '!';
+    iconContainer.classList.remove('green');
+    iconContainer.classList.add('red');
+  } else {
+    profileIcon.classList.add('fas', 'fa-check');
+    profileIcon.textContent = '';
+    iconContainer.classList.remove('red');
+    iconContainer.classList.add('green');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  updateProfileIcon();
+});
+
+function EditProfile() {
+      const form = document.getElementById('profileUpdateForm');
+      const overlay = document.getElementById('overlay');
+      form.style.display = 'block';
+      overlay.style.display = 'block';
+      const currentProfileImageSrc = document.getElementById('profileImage').src;
+      document.getElementById('currentProfileImage').src = currentProfileImageSrc;
+    }
+
+function CloseProfileForm() {
+      const form = document.getElementById('profileUpdateForm');
+      const overlay = document.getElementById('overlay');
+      form.style.display = 'none';
+      overlay.style.display = 'none';
+    }
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  const ownerId = localStorage.getItem('OWNER_ID');
+  const contactId = localStorage.getItem('CONTACT_ID');
+  
+  if (ownerId) {
+    const timestampLength = 14;
+    const nameWithoutTimestamp = ownerId.slice(timestampLength);
+    document.getElementById('nameInput').value = nameWithoutTimestamp;
+    }
+  
+  if (contactId) {
+    document.getElementById('phoneInput').value = contactId;
+  }
+});
+
+document.getElementById('saveProfile').addEventListener('click', function() {
+  const name = document.getElementById('nameInput').value;
+  const phone = document.getElementById('phoneInput').value;
+
+  if (!/^[a-zA-Z\s]+$/.test(name)) {
+    alert('Please enter a name without special characters');
+    return;
+  }
+
+    if (!phone.match(/^\d{10}$/)) {
+    alert('Please enter a valid 10-digit phone number.');
+    return;
+  }
+
+  const timestamp = getCurrentTimestamp();
+  const timestampedName = `${timestamp}${name}`;
+
+
+  localStorage.setItem('OWNER_ID', timestampedName);
+  localStorage.setItem('CONTACT_ID', phone);
+  updateProfileIcon()
+  alert('Profile information saved.');
+  CloseProfileForm();
+});
+
+document.getElementById('deleteProfile').addEventListener('click', function() {
+  localStorage.removeItem('OWNER_ID');
+  localStorage.removeItem('CONTACT_ID');
+updateProfileIcon()
+  alert('Profile information deleted.');
+CloseProfileForm();
+});
+
+// PROFILE IMAGE
+
+document.addEventListener('DOMContentLoaded', function() {
+  const profileImageInput = document.getElementById('profileImageInput');
+  const profileImage = document.getElementById('profileImage');
+  const uploadStatus = document.getElementById('uploadStatus');
+
+  const savedProfileImage = localStorage.getItem('profileImage');
+  if (savedProfileImage) {
+    profileImage.src = savedProfileImage;
+  }
+
+  profileImageInput.addEventListener('change', function() {
+    const file = profileImageInput.files[0];
+    if (!file) {
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const newImageSrc = e.target.result;
+      profileImage.src = newImageSrc;
+      localStorage.setItem('profileImage', newImageSrc);
+    };
+
+    reader.readAsDataURL(file);
+  });
+});
+
+
+// AUCTION LOGIC
+
+document.addEventListener('DOMContentLoaded', () => {
+
+        const merpmerp = 'Z2hwX2Q0Q';
+
+                const gloopdoop = 'zdSSVFhSzNZ';
+
+                    const dloogdloog = 'MXNhUnlxSzIz';
+
+                            const herpherp = gloopdoop + dloogdloog;
+
+                                    const derpderp = 'UEg3clN0Q2hkeDNsSGIwSw==';
+
+                                            const joojooo = merpmerp + herpherp + derpderp;
+
+                                                    const moo = atob(joojooo);
+
+                                                        const repo = 'EDGEHILLGREENS/llll';
+
+                                                                const repo2 = 'EDGEHILLGREENS/ll';
+
+                                                                        const apiUrl = `https://api.github.com/repos/${repo}/contents`;
+
+                                                                                                                                                const prefix = '@';
+
+    fetch(apiUrl, {
+      headers: {
+        'Authorization': `token ${moo}`
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      const productGrid = document.getElementById('productGrid');
+      data.forEach(file => {
+        if (file.name.startsWith(prefix)) {
+          const fileName = file.name;
+         const parts = fileName.split(/[@^!&$]+/);
+
+          const videoName = parts[1].trim();
+          const decodedVideoName2 = videoName.replace(/\[/g, '%');
+          const decodedVideoName = decodeURIComponent(decodedVideoName2);
+          const regex = /^(https:\/\/streamable.com\/)([a-zA-Z0-9]+)$/;
+          const decodedVideoName3 = decodedVideoName.replace(regex, '$1e/$2?');
+          const productDescription = parts[2].trim();
+          const productTitle = parts[3].trim().substring(12);
+          const productID = parts[3].trim();
+          const currentPrice = parseFloat(parts[4]);
+          const expiryDateString = parts[3].trim().substring(0, 12);      
+          const year = parseInt(expiryDateString.substring(0, 4));
+          const month = parseInt(expiryDateString.substring(4, 6)) - 1;
+          const day = parseInt(expiryDateString.substring(6, 8));
+          const hour = parseInt(expiryDateString.substring(8, 10));
+          const minute = parseInt(expiryDateString.substring(10, 12));
+          const expiryDate = new Date(year, month, day, hour, minute);
+
+          const productCard = document.createElement('div');
+          productCard.classList.add('product-card');
+          
+          productCard.innerHTML = `
+            <span class="favorite">
+            <i class="fa fa-star"></i>
+            </span>
+            <i class="fas fa-sync-alt refresh-icon"></i>
+<div class="product-video-container">
+    <iframe class="product-video" src="${decodedVideoName3}" frameborder="0" allowfullscreen></iframe>
+</div>
+            <div class="product-info">
+            <h2 class="product-title">${productTitle}</h2>
+            <p class="product-description">${productDescription}</p>
+            <p class="product-price" data-current-price="${currentPrice}">Current Price: R${currentPrice}</p> 
+            <form class="bid-form">
+            <input type="number" class="bid-input" placeholder="Enter bid amount" min="${currentPrice + 100}">
+            <button type="submit" class="bid-button">Bid</button>
+            </form>
+              <p class="countdown"></p>
+              <p class="bid-feedback" aria-live="polite"></p>
+              <p class="product-id" style="display: none;">${productID}</p>
+            </div>
+          `;
+
+          productGrid.appendChild(productCard);
+
+          const countdownElement = productCard.querySelector('.countdown');
+          updateCountdown(expiryDate, countdownElement, productCard);
+          setInterval(() => updateCountdown(expiryDate, countdownElement, productCard), 60000);
+
+          productCard.querySelector('.bid-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+    const favoriteElement = productCard.querySelector('.favorite');
+    if (!favoriteElement.classList.contains('clicked')) {
+      favoriteElement.classList.toggle('clicked');
+            const card = this.closest('.product-card');
+            productGrid.insertBefore(card, productGrid.firstChild);
+    }
+
+    const ownerId = localStorage.getItem('OWNER_ID');
+    if (!ownerId) {
+        EditProfile();
+        alert("PLEASE REGISTER ACCOUNT");
+        return;
+    }
+            const bidInput = this.querySelector('.bid-input');
+            const priceElement = this.parentNode.querySelector('.product-price');
+            const feedbackElement = this.parentNode.querySelector('.bid-feedback');
+            const currentPrice = parseFloat(priceElement.getAttribute('data-current-price'));
+            const bidAmount = parseFloat(bidInput.value);
+
+            if (bidAmount > currentPrice) {
+              priceElement.textContent = `Current Price: R${bidAmount}`;
+              priceElement.setAttribute('data-current-price', bidAmount);
+              feedbackElement.textContent = 'Processing Bid';
+              feedbackElement.style.color = 'green';
+              this.querySelector('.bid-input').setAttribute('min', bidAmount + 100);
+
+        const bidTime = getCurrentTimestamp();
+        const productIDElement = productCard.querySelector('.product-id');
+        const productID1 = productIDElement.textContent.trim();
+        const ownerId = localStorage.getItem('OWNER_ID');
+        const contactId = localStorage.getItem('CONTACT_ID');
+
+        const bidFileName = `${productID1}@${bidTime}$${bidAmount}!${ownerId}[${contactId}`;
+            const fileContent = '';
+
+            createFile(repo2, bidFileName, '', moo)
+              .then(() => {
+                feedbackElement.textContent = 'Bid successfully processed and recorded.';
+              })
+              .catch(error => {
+                feedbackElement.textContent = 'Bid processed but failed to record.';
+                feedbackElement.style.color = '#e74c3c';
+                console.error('Error creating bid file:', error);
+              });
+            } else {
+              feedbackElement.textContent = 'Bid amount must be higher than the current price.';
+              feedbackElement.style.color = '#e74c3c';
+            }
+
+            bidInput.value = '';
+          });
+
+        productCard.querySelector('.refresh-icon').addEventListener('click', function() {
+          const refreshIcon = this;
+          refreshIcon.classList.add('rotate');
+          setTimeout(() => {
+            refreshIcon.classList.remove('rotate');
+          }, 4444);
+          refreshPrice(productID, moo, repo2, productCard);
+        });
+
+          productCard.querySelector('.favorite').addEventListener('click', function() {
+            this.classList.toggle('clicked');
+            const card = this.closest('.product-card');
+            productGrid.insertBefore(card, productGrid.firstChild);
+          });
+
+        refreshPrice(productID, moo, repo2, productCard);
+      }
+    });
+  })
+    .catch(error => {
+      console.error('Error fetching repository contents:', error);
+    });
+  });
+
+  function updateCountdown(expiryDate, countdownElement, productCard) {
+    const now = new Date().getTime();
+    const timeLeft = expiryDate - now;
+
+    if (timeLeft > 0) {
+      const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+
+      countdownElement.textContent = `Auction ends in: ${days}d ${hours}h ${minutes}m`;
+    } else {
+      countdownElement.textContent = 'Auction has ended';
+      productCard.remove();
+    }
+  }
+
+function createFile(repo, fileName, content, moo) {
+  const apiUrl = `https://api.github.com/repos/${repo}/contents/${fileName}`;
+
+  return fetch(apiUrl, {
+    method: 'PUT',
+    headers: {
+      'Authorization': `token ${moo}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      message: `Create file ${fileName}`,
+      content: btoa(content)
+    })
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok ' + response.statusText);
+    }
+    return response.json();
+  });
+}
+
+function getCurrentTimestamp() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+
+  return `${year}${month}${day}${hours}${minutes}${seconds}`;
+}
+
+
+function refreshPrice(productID, moo, repo2, productCard) {
+  const apiUrl = `https://api.github.com/repos/${repo2}/contents`;
+
+  fetch(apiUrl, {
+    headers: {
+      'Authorization': `token ${moo}`
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    const matchingFiles = data.filter(file => file.name.startsWith(productID));
+    let highestBid = 0;
+    let ownerBid = null;
+
+    const storedOwnerId = localStorage.getItem('OWNER_ID');
+
+    matchingFiles.forEach(file => {
+      const bidParts = file.name.split('$');
+      if (bidParts.length > 1) {
+        const bidAmountPart = bidParts[1].split('!')[0];
+        const bidAmount = parseFloat(bidAmountPart);
+        if (bidAmount > highestBid) {
+          highestBid = bidAmount;
+
+          const ownerIdPart = file.name.split('!')[1]?.split('[')[0];
+          if (ownerIdPart === storedOwnerId) {
+            ownerBid = bidAmount;
+          }
+        }
+      }
+    });
+
+    const priceElement = productCard.querySelector('.product-price');
+
+    if (highestBid > 0) {
+      if (ownerBid !== null) {
+        priceElement.textContent = `Your Bid: R${ownerBid}`;
+      } else {
+        priceElement.textContent = `Current Price: R${highestBid}`;
+      }
+      priceElement.setAttribute('data-current-price', highestBid);
+
+      const bidInput = productCard.querySelector('.bid-input');
+      bidInput.setAttribute('min', highestBid + 100);
+    }
+  })
+  .catch(error => {
+    console.error('Error fetching repository contents for refresh:', error);
+  });
+}
+
+
+
+
+
+window.onscroll = function() {
+  var profileImage = document.querySelector(".profile-image");
+  var favoriteCount = document.querySelector(".favorite-count");
+  
+  if (window.scrollY > 0) {
+    profileImage.classList.add("fixed-profile-image");
+    favoriteCount.classList.add("fixed-favorite-count");
+  } else {
+    profileImage.classList.remove("fixed-profile-image");
+    favoriteCount.classList.remove("fixed-favorite-count");
+  }
+};
+
+  </script>
+</body>
+</html>
