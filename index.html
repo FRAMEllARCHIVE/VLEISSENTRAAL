@@ -450,15 +450,20 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 document.getElementById('saveProfile').addEventListener('click', function() {
-  const name = document.getElementById('nameInput').value;
-  const phone = document.getElementById('phoneInput').value;
+  const nameInput = document.getElementById('nameInput');
+  const phoneInput = document.getElementById('phoneInput');
+  
+  const name = nameInput.value.trim();
+  let phone = phoneInput.value.trim();
 
   if (!/^[a-zA-Z\s]+$/.test(name)) {
     alert('Please enter a name without special characters');
     return;
   }
 
-    if (!phone.match(/^\d{10}$/)) {
+  phone = phone.replace(/\s+/g, '');
+
+  if (!phone.match(/^\d{10}$/)) {
     alert('Please enter a valid 10-digit phone number.');
     return;
   }
@@ -470,7 +475,6 @@ document.getElementById('saveProfile').addEventListener('click', function() {
   localStorage.setItem('OWNER_ID', timestampedName);
   localStorage.setItem('CONTACT_ID', phone);
   updateProfileIcon()
-  alert('Profile information saved.');
   CloseProfileForm();
 });
 
@@ -584,7 +588,9 @@ document.addEventListener('DOMContentLoaded', () => {
             <p class="product-description">${productDescription}</p>
             <p class="product-price" data-current-price="${currentPrice}">Current Price: R${currentPrice}</p> 
             <form class="bid-form">
-            <input type="number" class="bid-input" placeholder="Enter bid amount" min="${currentPrice + 100}">
+<input type="number" class="bid-input" step="0.01" placeholder="Enter bid amount">
+
+
             <button type="submit" class="bid-button">Bid</button>
             </form>
               <p class="countdown"></p>
@@ -599,14 +605,14 @@ document.addEventListener('DOMContentLoaded', () => {
           updateCountdown(expiryDate, countdownElement, productCard);
           setInterval(() => updateCountdown(expiryDate, countdownElement, productCard), 60000);
 
-          productCard.querySelector('.bid-form').addEventListener('submit', function(e) {
-            e.preventDefault();
+productCard.querySelector('.bid-form').addEventListener('submit', function(e) {
+    e.preventDefault();
 
     const favoriteElement = productCard.querySelector('.favorite');
     if (!favoriteElement.classList.contains('clicked')) {
-      favoriteElement.classList.toggle('clicked');
-            const card = this.closest('.product-card');
-            productGrid.insertBefore(card, productGrid.firstChild);
+        favoriteElement.classList.toggle('clicked');
+        const card = this.closest('.product-card');
+        productGrid.insertBefore(card, productGrid.firstChild);
     }
 
     const ownerId = localStorage.getItem('OWNER_ID');
@@ -615,18 +621,24 @@ document.addEventListener('DOMContentLoaded', () => {
         alert("PLEASE REGISTER ACCOUNT");
         return;
     }
-            const bidInput = this.querySelector('.bid-input');
-            const priceElement = this.parentNode.querySelector('.product-price');
-            const feedbackElement = this.parentNode.querySelector('.bid-feedback');
-            const currentPrice = parseFloat(priceElement.getAttribute('data-current-price'));
-            const bidAmount = parseFloat(bidInput.value);
 
-            if (bidAmount > currentPrice) {
-              priceElement.textContent = `Current Price: R${bidAmount}`;
-              priceElement.setAttribute('data-current-price', bidAmount);
-              feedbackElement.textContent = 'Processing Bid';
-              feedbackElement.style.color = 'green';
-              this.querySelector('.bid-input').setAttribute('min', bidAmount + 100);
+    const bidInput = this.querySelector('.bid-input');
+    const priceElement = this.parentNode.querySelector('.product-price');
+    const feedbackElement = this.parentNode.querySelector('.bid-feedback');
+    const currentPrice = parseFloat(priceElement.getAttribute('data-current-price'));
+    const bidAmount = parseFloat(bidInput.value);
+
+    if (isNaN(bidAmount) || bidAmount <= currentPrice) {
+        feedbackElement.textContent = 'Bid amount must be higher than the current price.';
+        feedbackElement.style.color = '#e74c3c';
+    } else {
+        priceElement.textContent = `Your Bid: R${bidAmount}`;
+        priceElement.setAttribute('data-current-price', bidAmount);
+
+        feedbackElement.textContent = 'Processing Bid';
+        feedbackElement.style.color = 'green';
+
+        bidInput.setAttribute('min', (bidAmount + 99.99).toFixed(2));
 
         const bidTime = getCurrentTimestamp();
         const productIDElement = productCard.querySelector('.product-id');
@@ -635,24 +647,23 @@ document.addEventListener('DOMContentLoaded', () => {
         const contactId = localStorage.getItem('CONTACT_ID');
 
         const bidFileName = `${productID1}@${bidTime}$${bidAmount}!${ownerId}[${contactId}`;
-            const fileContent = '';
+        const fileContent = '';
 
-            createFile(repo2, bidFileName, '', moo)
-              .then(() => {
+        createFile(repo2, bidFileName, '', moo)
+            .then(() => {
                 feedbackElement.textContent = 'Bid successfully processed and recorded.';
-              })
-              .catch(error => {
+            })
+            .catch(error => {
                 feedbackElement.textContent = 'Bid processed but failed to record.';
                 feedbackElement.style.color = '#e74c3c';
                 console.error('Error creating bid file:', error);
-              });
-            } else {
-              feedbackElement.textContent = 'Bid amount must be higher than the current price.';
-              feedbackElement.style.color = '#e74c3c';
-            }
+            });
+    }
 
-            bidInput.value = '';
-          });
+    bidInput.value = '';
+});
+
+
 
         productCard.querySelector('.refresh-icon').addEventListener('click', function() {
           const refreshIcon = this;
