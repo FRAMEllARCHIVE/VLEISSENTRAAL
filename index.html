@@ -752,11 +752,18 @@ function refreshPrice(productID, moo, repo2, productCard) {
         const bidAmount = parseFloat(bidAmountPart);
         if (bidAmount > highestBid) {
           highestBid = bidAmount;
+        }
+      }
+    });
 
-          const ownerIdPart = file.name.split('!')[1]?.split('[')[0];
-          if (ownerIdPart === storedOwnerId) {
-            ownerBid = bidAmount;
-          }
+    matchingFiles.forEach(file => {
+      const bidParts = file.name.split('$');
+      if (bidParts.length > 1) {
+        const bidAmountPart = bidParts[1].split('!')[0];
+        const bidAmount = parseFloat(bidAmountPart);
+        const ownerIdPart = file.name.split('!')[1]?.split('[')[0];
+        if (bidAmount === highestBid && ownerIdPart === storedOwnerId) {
+          ownerBid = bidAmount;
         }
       }
     });
@@ -779,6 +786,7 @@ function refreshPrice(productID, moo, repo2, productCard) {
     console.error('Error fetching repository contents for refresh:', error);
   });
 }
+
 
 
 
