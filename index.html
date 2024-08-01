@@ -129,44 +129,21 @@ body {
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
-.product-card .favorite {
-      position: absolute;
-      top: 0px;
-      right: 3px;
-      color: #f39c12;
-      cursor: pointer;
-      z-index: 1003;
-      opacity: 0.3;
-      transition: 0.3s ease;
-      padding: 10px;
-}
-
-.product-card .favorite:hover {
-      color: #e67e22;
-      transform: scale(1.2);
-      opacity: 0.3;
-}
-
-.product-card .favorite.clicked {
-    color: #e67e22;
-    transform: scale(1.1);
-    opacity: 1;
-}
 
 .product-card .refresh-icon {
   position: absolute;
   top: 0px;
-  left: 0px;
+  right: 0px;
   color: #2980b9;
   cursor: pointer;
   z-index: 1003;
-  opacity: 0.4;
+  opacity: 0.8;
   transition: 0.3s ease;
   padding: 15px;
 }
 
 .product-card .refresh-icon:hover {
-  opacity: 0.6;
+  opacity: 0.9;
   transform: scale(1.1);
 }
 
@@ -177,15 +154,15 @@ body {
 @keyframes rotateIcon {
   0%, 100% {
     transform: rotate(0deg) scale(1);
-    opacity: 0.6;
+    opacity: 0.9;
   }
   50% {
     transform: rotate(180deg) scale(1.2);
-    opacity: 0.8;
+    opacity: 1;
   }
   100% {
     transform: rotate(360deg) scale(1);
-    opacity: 0.6;
+    opacity: 0.9;
   }
 }
 
@@ -433,7 +410,6 @@ function CloseProfileForm() {
       overlay.style.display = 'none';
     }
 
-
 document.addEventListener('DOMContentLoaded', function() {
   const ownerId = localStorage.getItem('OWNER_ID');
   const contactId = localStorage.getItem('CONTACT_ID');
@@ -576,21 +552,16 @@ document.addEventListener('DOMContentLoaded', () => {
           productCard.classList.add('product-card');
           
           productCard.innerHTML = `
-            <span class="favorite">
-            <i class="fa fa-star"></i>
-            </span>
             <i class="fas fa-sync-alt refresh-icon"></i>
-<div class="product-video-container">
-    <iframe class="product-video" src="${decodedVideoName3}" frameborder="0" allowfullscreen></iframe>
-</div>
+            <div class="product-video-container">
+                <iframe class="product-video" src="${decodedVideoName3}" frameborder="0" allowfullscreen></iframe>
+            </div>
             <div class="product-info">
             <h2 class="product-title">${productTitle}</h2>
             <p class="product-description">${productDescription}</p>
             <p class="product-price" data-current-price="${currentPrice}">Current Price: R${currentPrice}</p> 
             <form class="bid-form">
-<input type="number" class="bid-input" step="0.01" placeholder="Enter bid amount">
-
-
+            <input type="number" class="bid-input" step="0.01" placeholder="Enter bid amount">
             <button type="submit" class="bid-button">Bid</button>
             </form>
               <p class="countdown"></p>
@@ -607,13 +578,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 productCard.querySelector('.bid-form').addEventListener('submit', function(e) {
     e.preventDefault();
-
-    const favoriteElement = productCard.querySelector('.favorite');
-    if (!favoriteElement.classList.contains('clicked')) {
-        favoriteElement.classList.toggle('clicked');
-        const card = this.closest('.product-card');
-        productGrid.insertBefore(card, productGrid.firstChild);
-    }
 
     const ownerId = localStorage.getItem('OWNER_ID');
     if (!ownerId) {
@@ -663,9 +627,7 @@ productCard.querySelector('.bid-form').addEventListener('submit', function(e) {
     bidInput.value = '';
 });
 
-
-
-        productCard.querySelector('.refresh-icon').addEventListener('click', function() {
+productCard.querySelector('.refresh-icon').addEventListener('click', function() {
           const refreshIcon = this;
           refreshIcon.classList.add('rotate');
           setTimeout(() => {
@@ -673,13 +635,6 @@ productCard.querySelector('.bid-form').addEventListener('submit', function(e) {
           }, 4444);
           refreshPrice(productID, moo, repo2, productCard);
         });
-
-          productCard.querySelector('.favorite').addEventListener('click', function() {
-            this.classList.toggle('clicked');
-            const card = this.closest('.product-card');
-            productGrid.insertBefore(card, productGrid.firstChild);
-          });
-
         refreshPrice(productID, moo, repo2, productCard);
       }
     });
@@ -797,11 +752,6 @@ function refreshPrice(productID, moo, repo2, productCard) {
     console.error('Error fetching repository contents for refresh:', error);
   });
 }
-
-
-
-
-
 
 window.onscroll = function() {
   var profileImage = document.querySelector(".profile-image");
