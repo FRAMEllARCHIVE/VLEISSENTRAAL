@@ -745,7 +745,7 @@ function refreshPrice(productID, moo, repo2, productCard) {
       priceElement.setAttribute('data-current-price', highestBid);
 
       const bidInput = productCard.querySelector('.bid-input');
-      bidInput.setAttribute('min', highestBid + 0.1);
+      bidInput.setAttribute('min', highestBid + 0.01);
     }
   })
   .catch(error => {
