@@ -602,7 +602,7 @@ productCard.querySelector('.bid-form').addEventListener('submit', function(e) {
         feedbackElement.textContent = 'Processing Bid';
         feedbackElement.style.color = 'green';
 
-        bidInput.setAttribute('min', (bidAmount + 99.99).toFixed(2));
+        bidInput.setAttribute('min', (bidAmount + 0.1).toFixed(2));
 
         const bidTime = getCurrentTimestamp();
         const productIDElement = productCard.querySelector('.product-id');
